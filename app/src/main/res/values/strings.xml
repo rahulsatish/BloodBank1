@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Blood Bank</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="life_saver">Life Saver</string>
+    <string name="sign_up">Sign up</string>
+    <string name="radio_male">male</string>
+    <string name="radio_female">female</string>
+    <string name="blood_prompt">Choose a Blood Group</string>
+    <string name="blood_group">Blood Group</string>
+    <string name="drawer_item_list">List View</string>
+    <string name="drawer_item_map">Map View</string>
+    <string-array name="blood_group">
+        <item>A+ve</item>
+        <item>A-ve</item>
+        <item>B+ve</item>
+        <item>B-ve</item>
+        <item>O+ve</item>
+        <item>O-ve</item>
+        <item>AB+ve</item>
+        <item>AB-ve</item>
+    </string-array>
+    <string name="title_activity_maps">Map</string>
+    <string name="name">Name</string>
+</resources>
