@@ -64,7 +64,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="22dp"
-            android:text="Getlocation"
+            android:text="Get Location"
             android:onClick="getloc"/>
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/getbloodbtn"
@@ -73,7 +73,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="22dp"
-            android:text="RequestBlood"
+            android:text="Request Blood"
             android:onClick="getblood"/>
 
 

@@ -23,4 +23,5 @@
     </string-array>
     <string name="title_activity_maps">Map</string>
     <string name="name">Name</string>
+    <string name="title_activity_maps2">Map</string>
 </resources>

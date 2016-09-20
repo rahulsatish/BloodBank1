@@ -16,9 +16,9 @@ public class BloodModel {
     public String blood_group;
     @SerializedName("quantity")
     public int quantity;
-    @SerializedName("latitude")
+    @SerializedName("Latitude")
     double Latitude;
-    @SerializedName("longitude")
+    @SerializedName("Longitude")
     double Longitude;
 
     public BloodModel(double longitude, String address, String name, String hop_name, String blood_group, int quantity, double latitude) {

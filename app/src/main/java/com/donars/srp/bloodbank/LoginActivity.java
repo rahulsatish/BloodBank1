@@ -12,11 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.donars.srp.bloodbank.InsertBloodDetails;
-import com.donars.srp.bloodbank.MainActivity;
-import com.donars.srp.bloodbank.MapsActivity;
-import com.donars.srp.bloodbank.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,8 +30,6 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import android.content.Intent;
 
 
 public class LoginActivity extends AppCompatActivity {

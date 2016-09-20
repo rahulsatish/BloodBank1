@@ -1,12 +1,15 @@
 
 package com.donars.srp.bloodbank;
 
+import android.content.Intent;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -44,25 +47,22 @@ public class RequestBlood extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hospital_list);
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
 
-//        _buttonloc.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-//                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                double longitude = location.getLongitude();
-//                double latitude = location.getLatitude();
-//
-//                Toast.makeText(getBaseContext(),Double.toString(longitude),Toast.LENGTH_LONG).show();
-//            }
-//        });
         lV = (ListView) findViewById(R.id.listview);
 
         adapter = new BloodListAdapter(getApplicationContext(), Fetcher.detailsList);
         lV.setAdapter(adapter);
+        lV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(position);
+                Intent intent = new Intent(RequestBlood.this, BloodDonationActivity.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
-
-
-        }
+}
 

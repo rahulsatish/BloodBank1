@@ -6,8 +6,8 @@ package com.donars.srp.bloodbank.fetcher;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.donars.srp.bloodbank.MapsActivity;
 import com.donars.srp.bloodbank.model.BloodModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,7 +29,12 @@ public class Fetcher {
         g.execute();
     }
     private class GetDataJSON extends AsyncTask<String, Void, String> {
-    @Override
+        @Override
+        protected void onPreExecute() {
+            Log.d("tete","started");
+        }
+
+        @Override
     protected String doInBackground(String... params) {
         try {
             URL url = new URL("http://lifesaver.net23.net/getReq.php");
@@ -64,7 +69,7 @@ public class Fetcher {
     protected void onPostExecute(String te) {
         String myJSON = te;
         //t1.setText(myJSON);
-        //  Log.d("tete", te);
+          Log.d("tete", te);
         //  Toast.makeText(getApplicationContext(), te, Toast.LENGTH_LONG).show();
 
         Gson gson = new Gson();
@@ -98,7 +103,7 @@ public class Fetcher {
         Type type = new TypeToken<List<BloodModel>>() {
         }.getType();
         detailsList = gson.fromJson(te, type);
-
+        MapsActivity.addExtraMarkers();
     }
 }
 }
