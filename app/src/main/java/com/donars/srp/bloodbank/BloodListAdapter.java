@@ -2,101 +2,74 @@ package com.donars.srp.bloodbank;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
+import android.widget.ArrayAdapter;
+
 import android.widget.TextView;
 
 import com.donars.srp.bloodbank.model.BloodModel;
 
 import java.util.List;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 /**
  * Created by Rahul Satish on 24-08-2016.
  */
 
-public class BloodListAdapter implements ListAdapter {
+public class BloodListAdapter extends ArrayAdapter<BloodModel> {
 
     List<BloodModel> myList;
     Context mCtx;
+    LayoutInflater inflater;
 
-    BloodListAdapter(Context ctx, List<BloodModel> myList) {
+    BloodListAdapter(Context ctx,  int resource,List<BloodModel> myList) {
+        super(ctx,resource,myList);
         this.myList = myList;
         this.mCtx = ctx;
+        inflater=LayoutInflater.from(ctx);
+    }
+    private class ViewHolder{
+        TextView tv,tv1,tv2,tv3,tv4;
+    }
+    @NonNull
+    @Override
+    public View getView(int i, View v, ViewGroup parent) {
+        final ViewHolder viewHolder;
+        if(v==null) {
+            v = inflater.inflate(R.layout.listitem,parent,false);
+            viewHolder = new ViewHolder();
+            viewHolder.tv = (TextView) v.findViewById(R.id.item);
+            viewHolder.tv1 = (TextView) v.findViewById(R.id.item1);
+            viewHolder.tv2 = (TextView) v.findViewById(R.id.item2);
+            viewHolder.tv3 = (TextView) v.findViewById(R.id.item3);
+            viewHolder.tv4 = (TextView) v.findViewById(R.id.item4);
+            v.setTag(viewHolder);
+        }
+        else {
+            viewHolder=(ViewHolder) v.getTag();
+        }
+        viewHolder.tv.setText(myList.get(i).getHop_name());
+        viewHolder.tv1.setText(myList.get(i).getAddress());
+        viewHolder.tv2.setText(myList.get(i).getBlood_group());
+        viewHolder.tv3.setText(Integer.toString(myList.get(i).getQuantity()));
+        viewHolder.tv4.setText(myList.get(i).getName());
+        return v;
     }
 
-    @Override
-    public boolean areAllItemsEnabled() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled(int i) {
-        return false;
-    }
-
-    @Override
-    public void registerDataSetObserver(DataSetObserver dataSetObserver) {
-
-    }
-
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
-
-    }
-
-    @Override
-    public int getCount() {
-        return myList.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return myList.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        LayoutInflater infl = (LayoutInflater) mCtx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = infl.inflate(R.layout.listitem, viewGroup, false);
-        TextView tv = (TextView) v.findViewById(R.id.item);
+    /*
+       TextView tv = (TextView) v.findViewById(R.id.item);
         TextView tv1 = (TextView) v.findViewById(R.id.item1);
         TextView tv2 = (TextView) v.findViewById(R.id.item2);
         TextView tv3 = (TextView) v.findViewById(R.id.item3);
         TextView tv4 = (TextView) v.findViewById(R.id.item4);
 
-        tv.setText(myList.get(i).getHop_name());
-        tv1.setText(myList.get(i).getAddress());
-        tv2.setText(myList.get(i).getBlood_group());
-        tv3.setText(myList.get(i).getQuantity()+"");
-        tv4.setText(myList.get(i).getName());
 
-        return v;
-    }
+     */
 
-    @Override
-    public int getItemViewType(int i) {
-        return 1;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
 }

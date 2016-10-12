@@ -24,4 +24,11 @@
     <string name="title_activity_maps">Map</string>
     <string name="name">Name</string>
     <string name="title_activity_maps2">Map</string>
+    <string name="welcome">Welcome</string>
+    <string name="user">User</string>
+    <string name="hospital">Hospital</string>
+    <string name="title_activity_hosp_login">HospLogin</string>
+    <string name="title_activity_hosp">HospActivity</string>
+    <string name="title_activity_hosp_signup">HospSignup</string>
+    <string name="title_activity_request_blood_hosp">RequestBloodHosp</string>
 </resources>

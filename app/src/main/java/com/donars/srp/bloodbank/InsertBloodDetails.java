@@ -21,18 +21,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Created by Rahul Satish on 28-08-2016.
  */
 public class InsertBloodDetails extends AppCompatActivity {
-    @Bind(R.id.input_name) EditText _name;
-    @Bind(R.id.input_hos) EditText _hos;
-    @Bind(R.id.input_address) EditText _address;
-    @Bind(R.id.input_bg) EditText _bg;
-    @Bind(R.id.button_loc) Button _loc;
+    @BindView(R.id.input_name) EditText _name;
+    @BindView(R.id.input_hos) EditText _hos;
+    @BindView(R.id.input_address) EditText _address;
+    @BindView(R.id.input_bg) EditText _bg;
+    @BindView(R.id.button_loc) Button _loc;
 
     String name,hos,address,bg,res,bloodg;
 

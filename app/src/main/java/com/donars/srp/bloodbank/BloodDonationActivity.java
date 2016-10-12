@@ -14,7 +14,7 @@ import com.donars.srp.bloodbank.fetcher.Fetcher;
 
 public class BloodDonationActivity extends AppCompatActivity {
     private int position;
-    EditText quantity;
+   // EditText quantity;
     Button _submit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +27,8 @@ public class BloodDonationActivity extends AppCompatActivity {
         TextView tv2 = (TextView)findViewById(R.id.item2);
         TextView tv3 = (TextView) findViewById(R.id.item3);
         TextView tv4 = (TextView) findViewById(R.id.item4);
-        quantity=(EditText)findViewById(R.id.quantity);
-        quantity.setFilters(new InputFilter[]{ new InputFilterMinMax("1", Fetcher.detailsList.get(position).getQuantity()+"")});
+        //quantity=(EditText)findViewById(R.id.quantity);
+        //quantity.setFilters(new InputFilter[]{ new InputFilterMinMax("1", Fetcher.detailsList.get(position).getQuantity()+"")});
         _submit=(Button)findViewById(R.id.btn_submit);
         tv.setText(Fetcher.detailsList.get(position).getHop_name());
         tv1.setText(Fetcher.detailsList.get(position).getAddress());

@@ -1,10 +1,12 @@
 package com.donars.srp.bloodbank;
 
-
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,21 +17,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -40,34 +29,44 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-public class SignupActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class HospSignup extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    @BindView(R.id.input_name) EditText _nameText;
+    @BindView(R.id.input_name)
+    EditText _nameText;
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
-    @BindView(R.id.btn_signup) Button _signupButton;
-    @BindView(R.id.link_login) TextView _loginLink;
-    @BindView(R.id.input_lastd) TextView _address;
-        RadioGroup radioSexGroup;
+    @BindView(R.id.btn_signup)
+    Button _signupButton;
+    @BindView(R.id.link_login)
+    TextView _loginLink;
+    @BindView(R.id.input_address) TextView _address;
 
-    String gender,name,pass,email,myJSON,res,blood_grp,address;
+    @BindView(R.id.input_chief_doc)
+    EditText _nameCheifDoc;
+    @BindView(R.id.input_phone)
+    EditText _phoneNo;
+
+    String gender,name,pass,email,myJSON,res,address,cheifdoctor,phone;
     Integer la;
     JSONArray peoples;
     Spinner spinner;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_hosp_signup);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
         ButterKnife.bind(this);
 
         // Spinner element
 
-        spinner = (Spinner) findViewById(R.id.spinner1);
-        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
 
 
 
@@ -93,7 +92,7 @@ public class SignupActivity extends AppCompatActivity {
 
         _signupButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
+        final ProgressDialog progressDialog = new ProgressDialog(HospSignup.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
@@ -103,18 +102,11 @@ public class SignupActivity extends AppCompatActivity {
         email = _emailText.getText().toString();
         pass = _passwordText.getText().toString();
         address=_address.getText().toString();
-        // get selected radio button from radioGroup
-        int selectedId = radioSexGroup.getCheckedRadioButtonId();
+        cheifdoctor=_nameCheifDoc.getText().toString();
+        phone=_phoneNo.getText().toString();
 
-        // find the radiobutton by returned id
-        RadioButton radioSexButton = (RadioButton) findViewById(selectedId);
 
-        gender=radioSexButton.getText().toString();
-
-        // TODO: Implement your own signup logic here.
-        blood_grp = spinner.getSelectedItem().toString();
-
-        Log.d("request ",name+email+pass+address+gender+blood_grp);
+        Log.d("request ",name+email+pass+address+gender+cheifdoctor+phone);
         onSignupSuccess();
 
         new android.os.Handler().postDelayed(
@@ -176,7 +168,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://lifesaver.net23.net/register.php");
+                    URL url = new URL("http://lifesaver.net23.net/Hospregister.php");
                     HttpURLConnection httpURLConnection=(HttpURLConnection)url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
                     httpURLConnection.setDoOutput(true);
@@ -185,10 +177,9 @@ public class SignupActivity extends AppCompatActivity {
                     BufferedWriter bufferedWriter=new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
                     String data= URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
                             +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(pass,"UTF-8")+"&"
-                            +URLEncoder.encode("gender","UTF-8")+"="+URLEncoder.encode(gender,"UTF-8")+"&"
+                            +URLEncoder.encode("phone","UTF-8")+"="+URLEncoder.encode(phone,"UTF-8")+"&"
                             +URLEncoder.encode("username","UTF-8")+"="+URLEncoder.encode(email,"UTF-8")+"&"
-                            +URLEncoder.encode("blood_group","UTF-8")+"="+URLEncoder.encode(blood_grp,"UTF-8")+"&"
-                           // +URLEncoder.encode("las","UTF-8")+"="+URLEncoder.encode(mobile,"UTF-8")+"&"
+                            +URLEncoder.encode("chiefdoctor","UTF-8")+"="+URLEncoder.encode(cheifdoctor,"UTF-8")+"&"
                             +URLEncoder.encode("address","UTF-8")+"="+URLEncoder.encode(address,"UTF-8");
 
                     bufferedWriter.write(data);
@@ -218,7 +209,7 @@ public class SignupActivity extends AppCompatActivity {
                 myJSON=te;
                 //t1.setText(myJSON);
                 res="";
-                 Toast.makeText(getApplicationContext(),te,Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),te,Toast.LENGTH_LONG).show();
                 te="";
                 // t1.setText(te);
             }
@@ -226,4 +217,5 @@ public class SignupActivity extends AppCompatActivity {
         GetDataJSON g = new GetDataJSON();
         g.execute();
     }
+
 }

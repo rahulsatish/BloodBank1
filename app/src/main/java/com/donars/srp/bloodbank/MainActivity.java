@@ -3,21 +3,45 @@ package com.donars.srp.bloodbank;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ButtonBarLayout;
+import android.view.View;
+import android.widget.Button;
+import android.support.v7.widget.AppCompatButton;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    @BindView(R.id.btn_hosp)Button btn_hosp;
+    @BindView(R.id.btn_user)Button btn_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        btn_hosp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-
+                Intent intent = new Intent(MainActivity.this, HospLogin.class);
+                startActivity(intent);
+            }
+        });
+        btn_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
-    /*
+
+
+
+        /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

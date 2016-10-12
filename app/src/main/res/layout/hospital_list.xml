@@ -3,11 +3,12 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/md_blue_700">
-
     <ListView
-        android:id="@+id/listview"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:listSelector="#8fff"/>
 </LinearLayout>
