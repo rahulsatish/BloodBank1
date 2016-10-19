@@ -35,13 +35,16 @@ public class RequestBlood extends ListActivity {
 
         lV = (ListView) findViewById(android.R.id.list);
 
-        adapter = new BloodListAdapter(getApplicationContext(),R.layout.listitem, Fetcher.detailsList);
+        adapter = new BloodListAdapter(getApplicationContext(),Fetcher.detailsList);
         lV.setAdapter(adapter);
         lV=getListView();
        lV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               System.out.printf("Succs"+position);
+               System.out.printf("Succs\n"+position);
+               Intent intent=new Intent(RequestBlood.this,BloodDonationActivity.class);
+               intent.putExtra("position",position);
+               startActivity(intent);
            }
        });
     }

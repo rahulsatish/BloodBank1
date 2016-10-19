@@ -1,5 +1,6 @@
 package com.donars.srp.bloodbank;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -7,13 +8,18 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 
+import com.donars.srp.bloodbank.fetcher.Details;
 import com.donars.srp.bloodbank.fetcher.Fetcher;
 import com.donars.srp.bloodbank.model.BloodModel;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,7 +44,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleMap.OnInfoWindowClickListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleApiClient.ConnectionCallbacks {
 
     private static GoogleMap mMap;
     PrimaryDrawerItem item1;
@@ -47,6 +53,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /* GPS Constant Permission */
     private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
+
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.header)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("User name").withEmail("user@mail.com").withIcon(getResources().getDrawable(R.drawable.profile3))
+                        new ProfileDrawerItem().withName(Details.user.getName()).withEmail(Details.user.getUsername()).withIcon(getResources().getDrawable(R.drawable.profile3))
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -84,6 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         itemstats,
                         itemsignout
                 )
+
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -103,6 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 case 3: {
                                     Intent intent = new Intent(MapsActivity.this, LoginActivity.class);
                                     startActivity(intent);
+                                    finish();
                                     break;
                                 }
                             }
@@ -113,6 +123,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build();
         Fetcher fetcher = new Fetcher();
         fetcher.getData();
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     /**
@@ -128,43 +145,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnInfoWindowClickListener(this);
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        // Get LocationManager object from System Service LOCATION_SERVICE
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // Create a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
-
-        // Get the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
-
-        // Get Current Location
         check_Permission();
-        try {
-            Location myLocation = locationManager.getLastKnownLocation(provider);
-
-
-            // Get latitude of the current location
-            double latitude = myLocation.getLatitude();
-
-            // Get longitude of the current location
-            double longitude = myLocation.getLongitude();
-
-            // Create a LatLng object for the current location
-            LatLng latLng = new LatLng(latitude, longitude);
-
-            // Show the current location in Google Map
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-            // Zoom in the Google Map
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(20));
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        mMap.setMyLocationEnabled(true);
     }
 
     public static void addExtraMarkers() {
@@ -180,10 +162,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             marker = mMap.addMarker(new MarkerOptions().position(new LatLng(
                     bloodModel.getLatitude(), bloodModel.getLongitude())).title(inputString)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(bloodModel.getLatitude(), bloodModel.getLongitude()),12));
+           // mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(bloodModel.getLatitude(), bloodModel.getLongitude()),12));
             markerList.add(marker);
         }
         //  prevposition=0;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     public void check_Permission() {
@@ -193,6 +181,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
                     MY_PERMISSION_ACCESS_COARSE_LOCATION);
         }
+    }
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     @Override
@@ -211,4 +209,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        check_Permission();
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null) {
+            // Get latitude of the current location
+            double latitude = mLastLocation.getLatitude();
+
+            // Get longitude of the current location
+            double longitude = mLastLocation.getLongitude();
+
+            // Create a LatLng object for the current location
+            LatLng latLng = new LatLng(latitude, longitude);
+
+            // Show the current location in Google Map
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+            // Zoom in the Google Map
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!"));
+        }
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
 }

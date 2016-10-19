@@ -31,4 +31,10 @@
     <string name="title_activity_hosp">HospActivity</string>
     <string name="title_activity_hosp_signup">HospSignup</string>
     <string name="title_activity_request_blood_hosp">RequestBloodHosp</string>
+    <string name="title_activity_hosp2">Hosp2Activity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logout">Logout</string>
 </resources>

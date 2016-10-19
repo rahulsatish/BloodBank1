@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/text_1"
             android:text="@string/sign_up"
-            android:textColor="@color/blue"
+            android:textColor="@color/white"
             android:textSize="30sp"
             android:gravity="center"/>
 
@@ -60,11 +60,25 @@
                 android:inputType="textPassword"
                 android:hint="Password"/>
         </android.support.design.widget.TextInputLayout>
+        <!-- Phone Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:hint="Phone"/>
+        </android.support.design.widget.TextInputLayout>
 
         <RadioGroup
             android:id="@+id/radioSex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <RadioButton

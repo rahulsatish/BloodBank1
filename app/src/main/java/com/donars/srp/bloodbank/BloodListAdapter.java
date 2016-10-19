@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.donars.srp.bloodbank.model.BloodModel;
@@ -19,17 +20,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 /**
- * Created by Rahul Satish on 24-08-2016.
+ * Created by Lakshman sai on 13-10-2016.
  */
 
-public class BloodListAdapter extends ArrayAdapter<BloodModel> {
+public class BloodListAdapter extends BaseAdapter {
 
     List<BloodModel> myList;
     Context mCtx;
     LayoutInflater inflater;
 
-    BloodListAdapter(Context ctx,  int resource,List<BloodModel> myList) {
-        super(ctx,resource,myList);
+    BloodListAdapter(Context ctx,List<BloodModel> myList) {
         this.myList = myList;
         this.mCtx = ctx;
         inflater=LayoutInflater.from(ctx);
@@ -37,6 +37,22 @@ public class BloodListAdapter extends ArrayAdapter<BloodModel> {
     private class ViewHolder{
         TextView tv,tv1,tv2,tv3,tv4;
     }
+
+    @Override
+    public int getCount() {
+        return myList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return myList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     @NonNull
     @Override
     public View getView(int i, View v, ViewGroup parent) {
